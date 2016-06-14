@@ -1,0 +1,4 @@
+#SomethingDigital_PageCacheParams
+app/code/community/SomethingDigital/PageCacheParams
+app/etc/10_sd_pagecacheparams.xml
+app/etc/modules/SomethingDigital_PageCacheParams.xml

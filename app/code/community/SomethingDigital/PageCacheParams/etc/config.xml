@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <SomethingDigital_PageCacheParams>
+            <version>1.0.0</version>
+        </SomethingDigital_PageCacheParams>
+    </modules>
+
+    <global>
+        <models>
+            <sd_pagecacheparams>
+                <class>SomethingDigital_PageCacheParams_Model</class>
+            </sd_pagecacheparams>
+        </models>
+    </global>
+</config>

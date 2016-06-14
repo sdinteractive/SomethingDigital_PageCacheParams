@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config>
+    <global>
+        <cache>
+            <request_processors>
+                <sd_pagecacheparams>SomethingDigital_PageCacheParams_Model_Processor</sd_pagecacheparams>
+            </request_processors>
+        </cache>
+
+        <sd_pagecacheparams>
+            <blacklist>
+                <gclid />
+                <gdftrk />
+                <utm_content />
+                <utm_term />
+                <utm_campaign />
+                <utm_medium />
+                <utm_source />
+                <_ga />
+            </blacklist>
+        </sd_pagecacheparams>
+    </global>
+</config>
