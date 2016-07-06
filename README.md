@@ -4,6 +4,7 @@ This module prevents Magento EE's FPC from seeing certain parameters in the requ
 
 It does this by removing the parameters early on in request processing.  This is meant to be used only with parameters used for JavaScript tracking, such as Google Analytics and AdWords parameters.
 
+[This script](https://gist.github.com/mpchadwick/6c2313eda1ec6d42c8b97ed70fc5a55f) may be useful for helping you identify which parameters to blacklist.
 
 ## Changing the ignored parameters
 
