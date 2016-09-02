@@ -101,7 +101,7 @@ class SomethingDigital_PageCacheParams_Model_Processor
 
         // Changed, recombine.
         if ($changed) {
-            $query = implode('&', $query);
+            $query = implode('&', $params);
         }
         return $changed;
     }
