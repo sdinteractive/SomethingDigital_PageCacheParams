@@ -17,6 +17,10 @@
                 <utm_medium />
                 <utm_source />
                 <_ga />
+                
+                <!-- Mailchimp -->
+                <mc_cid />
+                <mc_eid />
             </blacklist>
         </sd_pagecacheparams>
     </global>
