@@ -17,6 +17,18 @@
                 <utm_medium />
                 <utm_source />
                 <_ga />
+                <gclsrc />
+                
+                <!-- Mailchimp -->
+                <mc_cid />
+                <mc_eid />
+
+                <!-- Bronto -->
+                <_bta_tid />
+
+                <!-- GoDataFeed -->
+                <gdfms />
+                <gdffi />
             </blacklist>
         </sd_pagecacheparams>
     </global>
