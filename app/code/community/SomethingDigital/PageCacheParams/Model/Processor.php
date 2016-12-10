@@ -73,7 +73,7 @@ class SomethingDigital_PageCacheParams_Model_Processor
                 $uri = substr($uri, 0, $pos);
             } else {
                 // Changed to a shorter query, reinsert after '?'.
-                $uri = substr($uri, 0, $pos + 1) . $query;
+                $uri = substr($uri, 0, $pos + 1).$query;
             }
         }
     }
@@ -89,7 +89,7 @@ class SomethingDigital_PageCacheParams_Model_Processor
             foreach ($blacklist as $name) {
                 // Skip anything that doesn't have a blacklisted key.
                 // Note: we also strip even if it has no value.
-                if (strpos($pair, $name . '=') !== 0 && $pair !== $name) {
+                if (strpos($pair, $name.'=') !== 0 && $pair !== $name) {
                     continue;
                 }
 
@@ -103,6 +103,7 @@ class SomethingDigital_PageCacheParams_Model_Processor
         if ($changed) {
             $query = implode('&', $params);
         }
+
         return $changed;
     }
 
