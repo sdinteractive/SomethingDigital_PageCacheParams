@@ -2,7 +2,11 @@
 
 class SomethingDigital_PageCacheParams_Model_Processor
 {
+    // List of query parameters that should be blacklisted (stripped) from the request
     protected $blacklist = null;
+
+    // List of controller routes that should be excluded from pagecacheparam blacklisting
+    protected $excludelist = null;
 
     public function extractContent($content)
     {
@@ -10,6 +14,9 @@ class SomethingDigital_PageCacheParams_Model_Processor
             // It's too late, FPC (or some other handler) has already run.
             // Just bail out.
             return $content;
+        } elseif ($this->shouldExcludeRoute()) {
+            // URI should not be scrubbed of pagecache params - pass along
+            return false;
         }
 
         // These operate directly on server / request vars because FPC does too.
@@ -37,6 +44,38 @@ class SomethingDigital_PageCacheParams_Model_Processor
         }
 
         // We didn't generate any content - pass along.
+        return false;
+    }
+
+    protected function getRouteExcludeList()
+    {
+        if ($this->excludelist !== null) {
+            return $this->excludelist;
+        }
+        
+        $routes = Mage::getConfig()->getNode('global/sd_pagecacheparams/exclude_list');
+        if (isset($routes)) {
+            return null;
+        } else {
+            $this->excludelist = array();
+        }
+        foreach ($routes->children() as $name => $node) {
+            //Cast to string is necessary as $node['route'] is actually a Mage_Core_Model_Config_Element object.
+            $this->excludelist[] = (string)$node['route'];
+        }
+        return $this->excludelist;
+    }
+
+    protected function shouldExcludeRoute()
+    {
+        $excludelist = $this->getRouteExcludeList();
+        if (isset($excludelist)) {
+            foreach ($excludelist as $excludeRoute) {
+                if (strpos($_SERVER['REQUEST_URI'], $excludeRoute) !== false) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
