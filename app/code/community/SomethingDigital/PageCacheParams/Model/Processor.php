@@ -14,7 +14,7 @@ class SomethingDigital_PageCacheParams_Model_Processor
             // It's too late, FPC (or some other handler) has already run.
             // Just bail out.
             return $content;
-        } elseif ($this->shouldExcludeRoute()) {
+        } elseif ($this->shouldExcludePath()) {
             // URI should not be scrubbed of pagecache params - pass along
             return false;
         }
@@ -42,36 +42,38 @@ class SomethingDigital_PageCacheParams_Model_Processor
                 $this->processUri($_SERVER[$key]);
             }
         }
-
+        
         // We didn't generate any content - pass along.
         return false;
     }
 
-    protected function getRouteExcludeList()
+    protected function getPathExcludeList()
     {
         if ($this->excludelist !== null) {
             return $this->excludelist;
         }
-        
-        $routes = Mage::getConfig()->getNode('global/sd_pagecacheparams/exclude_list');
-        if (isset($routes)) {
+        $paths = Mage::getConfig()->getNode('global/sd_pagecacheparams/exclude_list');
+        if (!isset($paths)) {
             return null;
         } else {
             $this->excludelist = array();
         }
-        foreach ($routes->children() as $name => $node) {
-            //Cast to string is necessary as $node['route'] is actually a Mage_Core_Model_Config_Element object.
-            $this->excludelist[] = (string)$node['route'];
+        foreach ($paths->children() as $name => $node) {
+            //Cast to string is necessary as $node['path'] is actually a Mage_Core_Model_Config_Element object.
+            // Allow default parameters to be ignored
+            if (!isset($node['ignore'])) {
+                $this->excludelist[] = (string)$node['path'];
+            }
         }
         return $this->excludelist;
     }
 
-    protected function shouldExcludeRoute()
+    protected function shouldExcludePath()
     {
-        $excludelist = $this->getRouteExcludeList();
+        $excludelist = $this->getPathExcludeList();
         if (isset($excludelist)) {
-            foreach ($excludelist as $excludeRoute) {
-                if (strpos($_SERVER['REQUEST_URI'], $excludeRoute) !== false) {
+            foreach ($excludelist as $excludePath) {
+                if (strpos($_SERVER['REQUEST_URI'], $excludePath) !== false) {
                     return true;
                 }
             }

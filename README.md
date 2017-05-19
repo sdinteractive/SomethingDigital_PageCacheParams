@@ -30,7 +30,8 @@ Please note: files under `app/etc/` are processed in alphabetical order.
 
 ##Exclude route from parameter removal process
 
-In a new config file found in `app/etc/`. You may add an optional `<exclude_list>` that can be used to exempt or exclude a route/URI from the PageCacheParam process. Any URI that contains the string in the `route` attribute will be excluded from the PageCacheParams processor.
+In a new config file found in `app/etc/`. You may add an optional `<exclude_list>` that can be used to exempt or exclude a path/URI from the PageCacheParam process. Any URI that contains the string in the `path` attribute will be excluded from the PageCacheParams processor.
+Additionally default exclusions can be overwritten using the `ignore` attribute.
 
 ```xml
 <?xml version="1.0"?>
@@ -41,7 +42,9 @@ In a new config file found in `app/etc/`. You may add an optional `<exclude_list
             <exclude_list>
                 <!-- The name "sd_exclude_cart_page" is in this case arbitary -->
                 <!-- The "route" attribute will be used to ignore URLs by PageCacheParams -->
-                <sd_exclude_cart_page route="/checkout/cart" />
+                <sd_exclude_cart_page path="/checkout/cart" />
+                <!-- Use ignore with any value to remove a node. -->
+                <listrak_remarketing ignore="true" />
             </exclude_list>
         ...
         </sd_pagecacheparams>

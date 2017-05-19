@@ -30,6 +30,10 @@
                 <gdfms />
                 <gdffi />
             </blacklist>
+            
+            <exclude_list>
+                <listrak_remarketing path="/remarketing/cart/reload" />
+            </exclude_list>
         </sd_pagecacheparams>
     </global>
 </config>
