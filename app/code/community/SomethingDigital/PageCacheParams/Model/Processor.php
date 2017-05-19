@@ -2,7 +2,11 @@
 
 class SomethingDigital_PageCacheParams_Model_Processor
 {
+    // List of query parameters that should be blacklisted (stripped) from the request
     protected $blacklist = null;
+
+    // List of controller routes that should be excluded from pagecacheparam blacklisting
+    protected $excludelist = null;
 
     public function extractContent($content)
     {
@@ -10,6 +14,9 @@ class SomethingDigital_PageCacheParams_Model_Processor
             // It's too late, FPC (or some other handler) has already run.
             // Just bail out.
             return $content;
+        } elseif ($this->shouldExcludePath()) {
+            // URI should not be scrubbed of pagecache params - pass along
+            return false;
         }
 
         // These operate directly on server / request vars because FPC does too.
@@ -35,8 +42,42 @@ class SomethingDigital_PageCacheParams_Model_Processor
                 $this->processUri($_SERVER[$key]);
             }
         }
-
+        
         // We didn't generate any content - pass along.
+        return false;
+    }
+
+    protected function getPathExcludeList()
+    {
+        if ($this->excludelist !== null) {
+            return $this->excludelist;
+        }
+        $paths = Mage::getConfig()->getNode('global/sd_pagecacheparams/exclude_list');
+        if (!isset($paths)) {
+            return null;
+        } else {
+            $this->excludelist = array();
+        }
+        foreach ($paths->children() as $name => $node) {
+            //Cast to string is necessary as $node['path'] is actually a Mage_Core_Model_Config_Element object.
+            // Allow default parameters to be ignored
+            if (!isset($node['ignore'])) {
+                $this->excludelist[] = (string)$node['path'];
+            }
+        }
+        return $this->excludelist;
+    }
+
+    protected function shouldExcludePath()
+    {
+        $excludelist = $this->getPathExcludeList();
+        if (isset($excludelist)) {
+            foreach ($excludelist as $excludePath) {
+                if (strpos($_SERVER['REQUEST_URI'], $excludePath) !== false) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 

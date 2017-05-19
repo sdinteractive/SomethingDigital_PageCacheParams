@@ -8,7 +8,7 @@ It does this by removing the parameters early on in request processing.  This is
 
 ## Changing the ignored parameters
 
-Add a new config file in `app/etc/`.  It cannot go in a module subdirectory.
+Add a new config file in `app/etc/`.  It cannot go in a module subdirectory. This new config in `app/etc/` will work in addition to the default config file provided.
 
 ```xml
 <?xml version="1.0"?>
@@ -27,3 +27,27 @@ Add a new config file in `app/etc/`.  It cannot go in a module subdirectory.
 ```
 
 Please note: files under `app/etc/` are processed in alphabetical order.
+
+##Exclude route from parameter removal process
+
+In a new config file found in `app/etc/`. You may add an optional `<exclude_list>` that can be used to exempt or exclude a path/URI from the PageCacheParam process. Any URI that contains the string in the `path` attribute will be excluded from the PageCacheParams processor.
+Additionally default exclusions can be overwritten using the `ignore` attribute.
+
+```xml
+<?xml version="1.0"?>
+<config>
+    <global>
+        <sd_pagecacheparams>
+        ...
+            <exclude_list>
+                <!-- The name "sd_exclude_cart_page" is in this case arbitary -->
+                <!-- The "route" attribute will be used to ignore URLs by PageCacheParams -->
+                <sd_exclude_cart_page path="/checkout/cart" />
+                <!-- Use ignore with any value to remove a node. -->
+                <listrak_remarketing ignore="true" />
+            </exclude_list>
+        ...
+        </sd_pagecacheparams>
+    </global>
+<config>
+```
